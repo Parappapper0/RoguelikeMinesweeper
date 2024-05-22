@@ -14,27 +14,5 @@ import { GamesService } from './services/games.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'fe-angular';
-
-  gameData: any;
-  gameID : number = 1;
-
-  constructor(private gamesService: GamesService) {}
-
-  newGame = () => {
-
-    this.gamesService.getGame(-1).subscribe((data: any) => {
-      
-      this.gameData = data;
-    });
-  }
-
-  loadGame = (id : number) => {
-
-    this.gamesService.getGame(id).subscribe((data: any) => {
-
-      this.gameData = data;
-    })
-  }
-
+  
 }
