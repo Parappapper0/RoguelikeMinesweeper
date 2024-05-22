@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import { GamesService } from '../services/games.service';
@@ -7,9 +6,9 @@ import { GamesService } from '../services/games.service';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [FormsModule, ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.scss'
 })
 export class HomeComponent {
 
