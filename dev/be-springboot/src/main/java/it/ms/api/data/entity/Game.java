@@ -1,6 +1,8 @@
 package it.ms.api.data.entity;
 
-import ch.qos.logback.core.joran.sanity.Pair;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -29,8 +31,11 @@ public class Game {
     @Column(name = "maxMana")
     private int maxMana;
 
-    @Column(name = "field")
-    private String field;
+    /*
+    @OneToMany(mappedBy="game_id", cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @Column(name = "cells")
+    private List<Cell> field;
+     */
 
 	public Game() {
 
@@ -40,7 +45,7 @@ public class Game {
         this.maxHealth = 100;
         this.mana = 100;
         this.maxMana = 100;
-        this.field = GenerateField(level);
+        //this.field = GenerateField(this, level);
 	}
 
     public Game(long id) {
@@ -52,7 +57,7 @@ public class Game {
         this.maxHealth = 100;
         this.mana = 100;
         this.maxMana = 100;
-        this.field = GenerateField(level);
+        //this.field = GenerateField(this, level);
 	}
 
 	public Game(int level, int gold, int health, int maxHealth, int mana, int maxMana) {
@@ -63,43 +68,67 @@ public class Game {
         this.maxHealth = maxHealth;
         this.mana = mana;
         this.maxMana = maxMana;
-        this.field = GenerateField(level);
+        //this.field = GenerateField(this, level);
 	}
 
-    public static String GenerateField(int level) {
+    public static List<Cell> GenerateField(Game creator, int level) {
 
-        char[] field = new String(new char[121]).replace('\0', (char)Integer.parseInt("10100000", 2)).toCharArray();
+        List<List<Cell>> newField = new ArrayList<>();
 
-        for(int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-                field[48 + (i * 11) + j] = (char)Integer.parseInt("0000" + Integer.toBinaryString(field[48 + (i * 11) + j]).substring(3, 7), 2);
+        for (int i = 0; i < 13; i++) {
+            newField.add(new ArrayList<Cell>());
+            for (int j = 0; j < 13; j++)
+                newField.get(i).add(new Cell(creator, i * 13 + j));
+        }
+            
 
-        field[60] = (char)Integer.parseInt("00000001", 2);
+        int max_number_of_enemies = (int)Math.max(73, 19 + (Math.pow(level, 1 + level / 50) / Math.pow(level, 1 + level / 1000)));
 
-        for (int i = 0; i < (int)Math.max(73, 19 + (Math.pow(level, 1 + level / 50) / Math.pow(level, 1 + level / 1000))); i++) {
+        for (int i = 0; i < max_number_of_enemies; i++) {
 
-            field[(int)Math.round(Math.random() * 10 * 11) + (int)Math.round(Math.random() * 11)] = (char)Integer.parseInt("00000011", 2);
+            newField.get((int)(Math.round(Math.random() * 12))).get((int)(Math.round(Math.random() * 12))).setMonsterId(1);
         }
 
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < 13; i++) {
 
-            for (int j = 0; j < 11; j++) {
+            for (int j = 0; j < 13; j++) {
 
-                int count = 0;
-                for(int a = -1; a < 2; a++)
-                    for (int b = -1; b < 2; b++) {
-                        
-                        if (Integer.toBinaryString(field[(int)Math.min(Math.max(0, i * 11 + a), 110) + (int)Math.min(Math.max(0, j + b), 11)]).substring(4, 7).equals("0000")) {
-                            field[(int)Math.min(Math.max(0, i * 11 + a), 110) + (int)Math.min(Math.max(0, j + b), 11)] = ""
-                            //fix fox doesn't work. (need to count nearby bombs)
-                        }
-                    }
+                if (i != 0 && newField.get(i-1).get(j).getMonsterId() != 0 && newField.get(i-1).get(j).getMonsterId() != -1)
+                    newField.get(i).get(j).incrementNearbyMines();
+
+                if (i != 12 && newField.get(i+1).get(j).getMonsterId() != 0 && newField.get(i+1).get(j).getMonsterId() != -1)
+                    newField.get(i).get(j).incrementNearbyMines();
+                
+
+                if (i != 0 && j != 0 && newField.get(i-1).get(j-1).getMonsterId() != 0 && newField.get(i-1).get(j-1).getMonsterId() != -1)
+                    newField.get(i).get(j).incrementNearbyMines();
+
+                if (j != 0 && newField.get(i).get(j-1).getMonsterId() != 0 && newField.get(i).get(j-1).getMonsterId() != -1)
+                    newField.get(i).get(j).incrementNearbyMines();
+
+                if (i != 12 && j != 0 && newField.get(i+1).get(j-1).getMonsterId() != 0 && newField.get(i+1).get(j-1).getMonsterId() != -1)
+                    newField.get(i).get(j).incrementNearbyMines();
+
+
+                if (i != 0 && j != 12 && newField.get(i-1).get(j+1).getMonsterId() != 0 && newField.get(i-1).get(j+1).getMonsterId() != -1)
+                    newField.get(i).get(j).incrementNearbyMines();
+
+                if (j != 12 && newField.get(i).get(j+1).getMonsterId() != 0 && newField.get(i).get(j+1).getMonsterId() != -1)
+                    newField.get(i).get(j).incrementNearbyMines();
+
+                if (i != 12 && j != 12 && newField.get(i+1).get(j+1).getMonsterId() != 0 && newField.get(i+1).get(j+1).getMonsterId() != -1)
+                    newField.get(i).get(j).incrementNearbyMines();
             }
         }
+        
+        List<Cell> flattened_field = new ArrayList<>();
 
+        for(int i = 0; i < 169; i++) {
 
+            flattened_field.add(newField.get(i % 13).get((i - (i % 13)) / 13));
+        }
 
-        return field;
+        return flattened_field;
     }
 
 	public long getId() {
@@ -154,16 +183,9 @@ public class Game {
         this.maxMana = maxMana;
     }
 
-    public String getField() {
-        return field;
-    }
-
-    public void setField(String field) {
-        this.field = field;
-    }
 
     @Override
 	public String toString() {
-		return "Game " + id + ":  [Level-" + level + ", Gold-" + gold + ", Health-" + health + "/" + maxHealth + ", Mana-" + mana + "/" + maxMana + ", Field-{" + field + "}]";
+		return "Game " + id + ":  [Level-" + level + ", Gold-" + gold + ", Health-" + health + "/" + maxHealth + ", Mana-" + mana + "/" + maxMana + "}]";
 	}
 }

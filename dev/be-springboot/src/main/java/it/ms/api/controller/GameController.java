@@ -1,5 +1,6 @@
 package it.ms.api.controller;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -9,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.ms.api.data.entity.Cell;
 import it.ms.api.data.entity.Game;
+import it.ms.api.data.repo.CellRepository;
 import it.ms.api.data.repo.GameRepository;
 
 @RestController
@@ -17,6 +20,7 @@ import it.ms.api.data.repo.GameRepository;
 public class GameController {
 
     @Autowired GameRepository gameRepo;
+    @Autowired CellRepository cellRepo;
 
     @GetMapping("list")
     public List<Game> list() {
@@ -31,6 +35,9 @@ public class GameController {
         if (id == null) {
 
             game = gameRepo.save(new Game());
+
+            List<Cell> fields = Game.GenerateField(game, 1);
+            cellRepo.saveAll(fields);
         }
         else {
             try {
@@ -40,6 +47,7 @@ public class GameController {
             } catch(NoSuchElementException e) {
 
                 game = gameRepo.save(new Game(id));
+                //cellRepo.saveAll(game.getField());
             }
         }
         
