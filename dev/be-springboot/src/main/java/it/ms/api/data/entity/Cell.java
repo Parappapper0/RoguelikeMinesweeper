@@ -25,12 +25,23 @@ public class Cell {
     private int monsterId;
     @Column(name = "nearby_mines")
     private int nearbyMines;
+    @Column(name = "revealed")
+    private boolean revealed;
+
+    public boolean isRevealed() {
+        return revealed;
+    }
+
+    public void setRevealed(boolean revealed) {
+        this.revealed = revealed;
+    }
 
     public Cell() {
 
         pos = -1;
         monsterId = 0;
         nearbyMines = 0;
+        revealed = false;
     }
 
     public Cell(Game gameId, int pos) {
@@ -39,6 +50,7 @@ public class Cell {
         this.pos = pos;
         monsterId = 0;
         nearbyMines = 0;
+        revealed = false;
     }
 
     public long getId() {
@@ -56,8 +68,6 @@ public class Cell {
     public void setgameId(Game gameId) {
         this.gameId = gameId;
     }
-
-
 
     public void setPos(int pos) {
         this.pos = pos;
