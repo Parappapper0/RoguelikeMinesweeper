@@ -1,0 +1,13 @@
+.cell{
+    min-width: 40px;
+    min-height: 40px;
+    border: 2px solid black;
+    border-radius: 5px;
+    width: fit-content;
+
+}
+
+
+.grid{
+    
+}
