@@ -13,8 +13,8 @@ public class Cell {
 
 
     @ManyToOne(cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "game_id", nullable = true)
-    private Game game_id;
+    @JoinColumn(name = "gameId", nullable = true)
+    private Game gameId;
 
 
     @Column(name = "position")
@@ -33,9 +33,9 @@ public class Cell {
         nearbyMines = 0;
     }
 
-    public Cell(Game game_id, int pos) {
+    public Cell(Game gameId, int pos) {
 
-        this.game_id = game_id;
+        this.gameId = gameId;
         this.pos = pos;
         monsterId = 0;
         nearbyMines = 0;
@@ -49,12 +49,12 @@ public class Cell {
         this.id = id;
     }
 
-    public Game getGame_id() {
-        return game_id;
+    public Game getgameId() {
+        return gameId;
     }
 
-    public void setGame_id(Game game_id) {
-        this.game_id = game_id;
+    public void setgameId(Game gameId) {
+        this.gameId = gameId;
     }
 
 

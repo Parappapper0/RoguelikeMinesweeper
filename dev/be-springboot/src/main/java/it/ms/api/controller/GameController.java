@@ -53,4 +53,10 @@ public class GameController {
         
         return game;
     }
+
+    @GetMapping("/cells")
+    public List<Cell> getCells(@RequestParam(name = "id", required = true) Long id) {
+        
+        return cellRepo.findAllByGameId(getGame(id));
+    }
 }
