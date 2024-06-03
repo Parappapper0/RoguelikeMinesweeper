@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -20,4 +20,15 @@ export class GameService {
       }
       return this.httpClient.get('http://localhost:4200/api/games?id=' + id);
   } 
+
+  update(x : number, y : number, type : number){
+    let http_headers = new HttpHeaders().set("Content-Type", "application/json")
+    return this.httpClient.put('http://localhost:8080',
+      '{"x" :"' +x+
+      '" "y" : "'+y+
+      '" "type" : "'+type+
+      '"}', 
+      {headers:http_headers})
+  }
+  
 }

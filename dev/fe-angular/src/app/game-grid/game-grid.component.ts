@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { GameService } from '../services/game.service';
 
 @Component({
   selector: 'app-game-grid',
@@ -10,17 +11,23 @@ import { CommonModule } from '@angular/common';
 })
 export class GameGridComponent implements OnInit{
  
+
+  constructor(private gameService: GameService) {}
+
   flags : number = 40
   time : string = "00:00"
-  source : Cell[] = [
-    {value : "1", gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false}, {value : "1", gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 4, revealed : false},{value : "1",gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false},{value : "1", gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false}, {value : "1",gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 4, revealed : false},{value : "1",gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false},{value : "1", gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false}, {value : "1",gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 4, revealed : false},{value : "1",gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false},{value : "1", gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false}, {value : "1",gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 4, revealed : false},{value : "1",gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false},{value : "1", gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false}, {value : "1",gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 4, revealed : false},{value : "1",gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false},{value : "1", gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false}, {value : "1",gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 4, revealed : false},{value : "1",gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false},{value : "1", gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false}, {value : "1",gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 4, revealed : false},{value : "1",gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false},{value : "1", gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false}, {value : "1",gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 4, revealed : false},{value : "1",gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false},{value : "1", gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 1, revealed : false}, {value : "1",gameId : "1", pos : 1, monsterId : 0, nearbyBombs : 4, revealed : false},
+  seconds : number = 0
+  source !:  Cell[];
+  placeholderSource : Cell[] = [
+    {value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1", id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "1",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "1",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "1",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "1",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "1",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "1",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "1",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "1",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1",id : "1", pos : 1, nearbyBombs : 4, revealed : false},
     
   ];
 
   table : Cell[][] = [[]];
 
   ngOnInit(): void {
-    this.table = this.convertArrayToMatrix(this.source,13)
+    
+    this.table = this.convertArrayToMatrix(this.placeholderSource,13)
 
     console.log(this.table)
   }
@@ -44,35 +51,36 @@ export class GameGridComponent implements OnInit{
     return matrix;
   }
 
-  clickedTile(cell : Cell){
-
-  }
-
 
   onRightClick(event: MouseEvent, rowIndex: number, colIndex: number): void {
     event.preventDefault();
 
-    // Your flagging logic here
     this.toggleFlag(rowIndex, colIndex);
   }
 
   onLeftClick(rowIndex: number, colIndex: number): void {
-    // Your left-click logic here
+    this.gameService.update(colIndex,rowIndex,0).subscribe(res => {
+
+      console.log(res)
+      
+    });
+    
   }
 
   toggleFlag(rowIndex: number, colIndex: number): void {
     const cell = this.table[rowIndex][colIndex];
     
     cell.revealed = !cell.revealed;
-    cell.value = cell.revealed ? '🚩' : ''; // Update the display property based on flag status
+    cell.value = cell.revealed ? '🚩' : '';
+
   }
 
 }
 
+
 interface Cell {
-  gameId : string;
+  id : string;
   pos: number;
-  monsterId : number;
   nearbyBombs : number;
   revealed : boolean;
   value : string;
