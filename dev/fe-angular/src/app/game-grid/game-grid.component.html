@@ -1,0 +1,21 @@
+<div class="container bg-dark">
+    <div class="row justify-content-between">
+        <div class="counters"><div class="col" id="flags">{{flags}}</div></div>
+        <div class="counters"><div class="col" id="timer">{{time}}</div></div>
+    </div>
+    <div class="row grid" *ngFor="let cell of table;index as i">
+        <div class="col" *ngFor="let c of cell;index as j">
+            <div > 
+                <button class="cell" 
+                (contextmenu)="onRightClick($event, i, j)"
+                (click)="onLeftClick(i, j)"
+                [disabled]="c.revealed"
+                >{{c.value}}</button>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-evenly">
+        <div class="counters"><div class="col" id="flags">{{flags}}</div></div>
+        <div class="counters"><div class="col" id="timer">{{time}}</div></div>
+    </div>
+</div>

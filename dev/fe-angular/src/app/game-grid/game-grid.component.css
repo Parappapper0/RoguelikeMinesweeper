@@ -1,0 +1,52 @@
+.container{
+    width: 700px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.row{
+    margin: 10px;
+}
+
+.grid{
+    .col{
+        width: 35px;
+        height: 35px;
+        padding: 0%;
+        color: white;
+    }
+}
+
+
+.cell{
+    width: 35px;
+    height: 35px;
+    color: white;
+    background-color: #212529;
+
+    
+}
+
+button:disabled{
+    border-top: 2px solid #545454;
+    border-left: 2px solid #545454;
+    border-right: 2px solid #000;
+    border-bottom: 2px solid #000;
+}
+
+.counters{
+    height: 30px;
+    width: 80px;
+    background-color: black;
+    border-radius: 5px;
+    
+    div{
+        color: white;
+        text-align: center;
+        position: relative;
+        top: 3px;
+        right: 1px;
+    }
+}
+
