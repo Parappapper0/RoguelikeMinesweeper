@@ -29,7 +29,7 @@ public class Game {
         //this.field = GenerateField(this, level);
 	}
 
-    public static List<Cell> GenerateField(Game creator, int level) {
+    public static List<Cell> GenerateField(Game creator) {
 
         List<List<Cell>> newField = new ArrayList<>();
 
@@ -40,11 +40,17 @@ public class Game {
         }
             
 
-        int max_number_of_enemies = (int)Math.max(73, 19 + (Math.pow(level, 1 + level / 50) / Math.pow(level, 1 + level / 1000)));
+        int max_number_of_enemies = 25;
 
         for (int i = 0; i < max_number_of_enemies; i++) {
 
-            newField.get((int)(Math.round(Math.random() * 12))).get((int)(Math.round(Math.random() * 12))).setMonsterId(1);
+            int x = (int)(Math.round(Math.random() * 12));
+            int y = (int)(Math.round(Math.random() * 12));
+            if (newField.get(x).get(y).getMonsterId() == 1) {
+                i--;
+                continue;
+            }
+            newField.get(x).get(y).setMonsterId(1);
         }
 
         for (int i = 0; i < 13; i++) {

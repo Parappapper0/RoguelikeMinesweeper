@@ -20,7 +20,3 @@ http://localhost:4200
  Backend:
 -----------------
 http://localhost:8080
-
------------------
-DATABASE CELL FORMAT
------------------
