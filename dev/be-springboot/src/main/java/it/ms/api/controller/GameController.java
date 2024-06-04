@@ -35,7 +35,7 @@ public class GameController {
         
         Game game;
 
-        if (id == null) {
+        if (id == -1) {
 
             game = gameRepo.save(new Game());
 

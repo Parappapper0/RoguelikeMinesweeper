@@ -19,7 +19,7 @@ export class GameGridComponent implements OnInit{
   seconds : number = 0
   source !:  Cell[];
   placeholderSource : Cell[] = [
-    {value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1", id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "1",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "1",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "1",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "1",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "1",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "1",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "1",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "1",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "1", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "1",id : "1", pos : 1, nearbyBombs : 4, revealed : false},
+    {value : "", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "", id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "",id : "1", pos : 1, nearbyBombs : 4, revealed : false},{value : "",id : "1", pos : 1, nearbyBombs : 1, revealed : false},{value : "", id : "1", pos : 1, nearbyBombs : 1, revealed : false}, {value : "",id : "1", pos : 1, nearbyBombs : 4, revealed : false},
     
   ];
 
@@ -27,9 +27,16 @@ export class GameGridComponent implements OnInit{
 
   ngOnInit(): void {
     
+    this.gameService.getGame(-1).subscribe(res => {
+
+      console.log(res + " prova ")
+      
+    });
+
+    this.gameService.getCells
+    
     this.table = this.convertArrayToMatrix(this.placeholderSource,13)
 
-    console.log(this.table)
   }
 
   convertArrayToMatrix<T>(array: T[], rowSize: number = 13): T[][] {
@@ -59,7 +66,7 @@ export class GameGridComponent implements OnInit{
   }
 
   onLeftClick(rowIndex: number, colIndex: number): void {
-    this.gameService.update(colIndex,rowIndex,0).subscribe(res => {
+    this.gameService.update(colIndex,rowIndex,"0").subscribe(res => {
 
       console.log(res)
       

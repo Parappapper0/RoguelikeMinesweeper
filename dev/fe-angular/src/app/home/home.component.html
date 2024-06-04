@@ -1,11 +1,14 @@
 <div class="container text-center">
-    <div class="card bg-dark text-white text-center mb-3" style="width: 18rem;">
+    <div class="card bg-dark text-white text-center mb-3" style="width: 18rem;" *ngIf="!gameStart">
         <div class="card-body">
-            <form action="">
-                <p class="card-text">Inserisci un seed per continuare una partita o lascia vuoto per generarne una casuale:</p>
-                <input type="text" class="form-control my-3">
-                <button href="#" class="btn btn-primary">Go somewhere</button>
-            </form>
+           
+            <p class="card-text">Benvenuto in Campo Minato! </p>
+            
+            <button type="button" (click)="gameStart=!gameStart" class="btn btn-primary">Inizia una partita</button>
+        
         </div>
+    </div>
+    <div>
+        <app-game-grid *ngIf="!gameStart"></app-game-grid>
     </div>
 </div>

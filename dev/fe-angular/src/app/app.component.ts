@@ -10,7 +10,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HomeComponent, NavbarComponent, GameGridComponent, JsonPipe, HttpClientModule],
+  imports: [RouterOutlet, HomeComponent,CommonModule, NavbarComponent, GameGridComponent, JsonPipe, HttpClientModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -18,7 +18,6 @@ export class AppComponent {
   title = 'fe-angular';
 
   tutorials: any;
-  gameOnGoing : boolean = false;
 
   constructor(private gameService: GameService) {}
 

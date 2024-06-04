@@ -13,7 +13,7 @@ export class GameService {
       return this.httpClient.get('http://localhost:4200/api/games/list');
   }
 
-  getGame(id : number) : Observable<any> {
+  getGame(id : any) : Observable<any> {
       if (id == -1) {
 
         return this.httpClient.get('http://localhost:4200/api/games');
@@ -21,12 +21,16 @@ export class GameService {
       return this.httpClient.get('http://localhost:4200/api/games?id=' + id);
   } 
 
-  update(x : number, y : number, type : number){
+  getCells() : Observable<any> {
+    return this.httpClient.get('http://localhost:4200/api/');
+}
+
+  update(x : number, y : number, actionType : string){
     let http_headers = new HttpHeaders().set("Content-Type", "application/json")
-    return this.httpClient.put('http://localhost:8080',
+    return this.httpClient.put('http://localhost:4200/api/',
       '{"x" :"' +x+
       '" "y" : "'+y+
-      '" "type" : "'+type+
+      '" "actionType" : "'+actionType+
       '"}', 
       {headers:http_headers})
   }
