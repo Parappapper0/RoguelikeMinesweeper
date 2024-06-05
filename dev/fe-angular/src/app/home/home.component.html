@@ -3,12 +3,11 @@
         <div class="card-body">
            
             <p class="card-text">Benvenuto in Campo Minato! </p>
-            
             <button type="button" (click)="gameStart=!gameStart" class="btn btn-primary">Inizia una partita</button>
         
         </div>
     </div>
     <div>
-        <app-game-grid *ngIf="!gameStart"></app-game-grid>
+        <app-game-grid *ngIf="gameStart"></app-game-grid>
     </div>
 </div>

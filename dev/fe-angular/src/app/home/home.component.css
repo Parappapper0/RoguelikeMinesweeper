@@ -1,5 +1,8 @@
 .card {
-    margin-top: 200px;
     margin: 0 auto; 
     float: none; 
+}
+
+.container{
+    margin-top: 150px;
 }

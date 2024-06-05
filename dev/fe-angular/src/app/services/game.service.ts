@@ -14,23 +14,20 @@ export class GameService {
   }
 
   getGame(id : any) : Observable<any> {
-      if (id == -1) {
-
-        return this.httpClient.get('http://localhost:4200/api/games');
-      }
+      
       return this.httpClient.get('http://localhost:4200/api/games?id=' + id);
   } 
 
-  getCells() : Observable<any> {
-    return this.httpClient.get('http://localhost:4200/api/');
+  getCells(id : any) : Observable<any> {
+    return this.httpClient.get('http://localhost:4200/api/games/cells?id=' + id);
 }
 
-  update(x : number, y : number, actionType : string){
+  update(x : number, y : number, actionType : string, id : string){
     let http_headers = new HttpHeaders().set("Content-Type", "application/json")
-    return this.httpClient.put('http://localhost:4200/api/',
+    return this.httpClient.put('http://localhost:4200/api/games/' + id,
       '{"x" :"' +x+
-      '" "y" : "'+y+
-      '" "actionType" : "'+actionType+
+      '", "y" : "'+y+
+      '", "actionType" : "'+actionType+
       '"}', 
       {headers:http_headers})
   }

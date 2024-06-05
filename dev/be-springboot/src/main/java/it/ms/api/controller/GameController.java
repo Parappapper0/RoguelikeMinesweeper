@@ -42,6 +42,7 @@ public class GameController {
             List<Cell> fields = Game.GenerateField(game);
             cellRepo.saveAll(fields);
         }
+        
         else {
             try {
 
@@ -50,7 +51,8 @@ public class GameController {
             } catch(NoSuchElementException e) {
 
                 game = gameRepo.save(new Game(id));
-                //cellRepo.saveAll(game.getField());
+                List<Cell> fields = Game.GenerateField(game);
+                cellRepo.saveAll(fields);
             }
         }
         
@@ -65,24 +67,72 @@ public class GameController {
 
     @PutMapping("/{id}")
     public List<Cell> move(@PathVariable("id") Long id, @RequestBody ActionData actionData) {
-
-
         List<Cell> field = cellRepo.findAllByGameId(gameRepo.findById(id).get());
 
-        if (actionData.getActionCode() == 0) { //left
+        if (actionData.getActionCode() == 0) { //left click
+            int x = actionData.getX();
+            int y = actionData.getY();
+            Cell cell = field.get(y * 13 + x);
 
-            if (field.get(actionData.getY() * 13 + actionData.getX()).getMonsterId() == 1) {
-
-                //you lost
+            if (cell.getMonsterId() == 1) {
+                // you lost
+                cellRepo.deleteAll(cellRepo.findAllByGameId(getGame(id)));
                 gameRepo.delete(getGame(id));
                 return null;
+            } else if (cell.getNearbyMines() == 0) {
+                revealAdjacentCells(field, x, y);
+            } else {
+                cell.setRevealed(true);
             }
-            else {
 
-                field.get(actionData.getY() * 13 + actionData.getX()).setRevealed(true);
-            }
+            /*if(allNonMineCellsRevealed(field)){
+                cellRepo.findAllByGameIdAndRevealed(getGame(id), false);
+            }*/
+        }
+        
+        cellRepo.saveAll(field);
+
+        List<Cell> temp = cellRepo.findAllByGameIdAndRevealed(getGame(id), true); 
+        
+        if(temp.size() == 144){ //to check if the user won
+            cellRepo.deleteAll(cellRepo.findAllByGameId(getGame(id)));
+            gameRepo.delete(getGame(id));
         }
 
-        return cellRepo.saveAll(field);
+        return temp;
     }
+
+    private void revealAdjacentCells(List<Cell> field, int x, int y) {
+        if (x < 0 || x >= 13 || y < 0 || y >= 13) {
+            return; 
+        }
+    
+        Cell cell = field.get(y * 13 + x);
+        if (cell.isRevealed()) {
+            return; 
+        }
+    
+        cell.setRevealed(true);
+    
+        if (cell.getNearbyMines() == 0) {
+            int[] dx = {-1, 0, 1, -1, 1, -1, 0, 1};
+            int[] dy = {-1, -1, -1, 0, 0, 1, 1, 1};
+            for (int i = 0; i < 8; i++) {
+                revealAdjacentCells(field, x + dx[i], y + dy[i]);
+            }
+        }
+    }
+
+    /*private boolean allNonMineCellsRevealed(List<Cell> field) {
+        boolean onemissing = false;
+        for (Cell cell : field) {
+            if (cell.getMonsterId() != 1 && !cell.isRevealed()) {
+                if(onemissing)
+                    return false;
+                onemissing = true;
+            }
+        }
+        return true; 
+    }
+    */
 }
